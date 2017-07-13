@@ -1,1 +1,1 @@
-# ideaTranslatePlugin
+# MyPlugin
