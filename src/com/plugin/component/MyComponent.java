@@ -34,7 +34,6 @@ public class MyComponent implements ApplicationComponent {
                 "Hello World!",
                 "Sample",
                 Messages.getInformationIcon()
-
         );
 
     }

@@ -1,6 +1,6 @@
 package com.plugin.youdao;
 
-import com.alibaba.fastjson.JSONObject;
+import org.jetbrains.annotations.Contract;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -20,6 +20,23 @@ public class YouDaoBasic {
     private final static String appSecret = "xa8dNhj5e28HcjC8AhMfSmBmhldDCndv";
     private final static String preUrl = "https://openapi.youdao.com/api";
 
+
+    @Contract(pure = true)
+    public static String getAppKey() {
+        return appKey;
+    }
+
+    @Contract(pure = true)
+    public static String getAppSecret() {
+        return appSecret;
+    }
+
+    @Contract(pure = true)
+    public static String getPreUrl() {
+        return preUrl;
+    }
+
+    /*
     public static void main(String[] args) {
         String query = "peach";
         String from = "en";
@@ -29,7 +46,7 @@ public class YouDaoBasic {
         System.out.println(url);
         JSONObject object = Util.httpRequest(url, "POST");
         System.out.println(Util.parseAnswer(object));
-    }
+    }*/
 
     /**
      * 组装请求参数params
