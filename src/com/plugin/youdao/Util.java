@@ -26,7 +26,6 @@ public class Util {
             for (int i = 0; i < array.size(); i++) {
                 ans.append(array.get(i).toString());
             }
-            // ans.append(translate.get("translation").toString());
         } else {
             switch (errorCode) {
                 case "101":
