@@ -1,12 +1,16 @@
+package com.plugin.component;
+
 import com.intellij.openapi.components.ApplicationComponent;
-import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Created by hyz on 17-7-13.
+ * @author hongyuzhou
+ * @version V1.0
+ * @date 2017/7/14
+ * @since JDK1.8
  */
-public class MyComponent implements ApplicationComponent {
-    public MyComponent() {
+public class Translate implements ApplicationComponent {
+    public Translate() {
     }
 
     @Override
@@ -22,23 +26,6 @@ public class MyComponent implements ApplicationComponent {
     @Override
     @NotNull
     public String getComponentName() {
-        return "MyComponent";
-    }
-
-
-    public void sayHello() {
-
-        // Show dialog with message
-
-        Messages.showMessageDialog(
-
-                "Hello World!",
-
-                "Sample",
-
-                Messages.getInformationIcon()
-
-        );
-
+        return "Translate";
     }
 }

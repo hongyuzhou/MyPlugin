@@ -30,14 +30,17 @@
 
   <actions>
     <!-- Add your actions here -->
-    <action id="SayHello" class="SayHelloAction" text="SayHello!">
+    <action id="SayHello" class="com.plugin.actions.SayHelloAction" text="SayHello!">
       <add-to-group group-id="WindowMenu" anchor="first"/>
     </action>
   </actions>
 
   <application-components>
     <component>
-      <implementation-class>MyComponent</implementation-class>
+      <implementation-class>com.plugin.component.MyComponent</implementation-class>
+    </component>
+    <component>
+      <implementation-class>com.plugin.component.Translate</implementation-class>
     </component>
   </application-components>
 </idea-plugin>

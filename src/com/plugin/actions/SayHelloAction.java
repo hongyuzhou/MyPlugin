@@ -1,7 +1,10 @@
+package com.plugin.actions;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.plugin.component.MyComponent;
 
 /**
  * Created by hyz on 17-7-13.

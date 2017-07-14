@@ -1,4 +1,6 @@
-package com.plugin.translate;
+package com.plugin.youdao;
+
+import com.alibaba.fastjson.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -16,21 +18,37 @@ import java.util.Map;
 public class YouDaoBasic {
     private final static String appKey = "12b86de63ab132bb";
     private final static String appSecret = "xa8dNhj5e28HcjC8AhMfSmBmhldDCndv";
+    private final static String preUrl = "https://openapi.youdao.com/api";
 
     public static void main(String[] args) {
-        String query = "good";
-        String salt = String.valueOf(System.currentTimeMillis());
+        String query = "peach";
         String from = "en";
         String to = "zh_CHS";
-        String sign = md5(appKey + query + salt + appSecret);
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = queryInfo(query, from, to);
+        String url = getUrlWithQueryString(preUrl, params);
+        System.out.println(url);
+        JSONObject object = Util.httpRequest(url, "POST");
+        System.out.println(Util.parseAnswer(object));
+    }
+
+    /**
+     * 组装请求参数params
+     *
+     * @param query
+     * @param from
+     * @param to
+     * @return
+     */
+    public static Map<String, String> queryInfo(String query, String from, String to) {
+        Map<String, String> params = new HashMap<>();
+        String salt = String.valueOf(System.currentTimeMillis());
         params.put("q", query);
         params.put("from", from);
         params.put("to", to);
-        params.put("sign", sign);
+        params.put("sign", md5(appKey + query + salt + appSecret));
         params.put("salt", salt);
         params.put("appKey", appKey);
-        System.out.println(getUrlWithQueryString("https://openapi.youdao.com/api", params));
+        return params;
     }
 
     /**
@@ -47,13 +65,13 @@ public class YouDaoBasic {
                 'A', 'B', 'C', 'D', 'E', 'F'};
         byte[] btInput = string.getBytes();
         try {
-            /** 获得MD5摘要算法的 MessageDigest 对象 */
+            /* 获得MD5摘要算法的 MessageDigest 对象 */
             MessageDigest mdInst = MessageDigest.getInstance("MD5");
-            /** 使用指定的字节更新摘要 */
+            /* 使用指定的字节更新摘要 */
             mdInst.update(btInput);
-            /** 获得密文 */
+            /* 获得密文 */
             byte[] md = mdInst.digest();
-            /** 把密文转换成十六进制的字符串形式 */
+            /* 把密文转换成十六进制的字符串形式 */
             int j = md.length;
             char str[] = new char[j * 2];
             int k = 0;
