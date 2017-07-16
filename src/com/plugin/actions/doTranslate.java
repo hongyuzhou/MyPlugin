@@ -39,7 +39,7 @@ public class doTranslate extends AnAction {
                         YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
                 ), method)
         );
-        Messages.showMessageDialog(translateAns, "youdao answer", Messages.getInformationIcon());
+        Messages.showMessageDialog(translateAns, "Translate Answer", Messages.getInformationIcon());
     }
 
     @Override

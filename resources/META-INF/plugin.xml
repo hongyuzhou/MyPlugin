@@ -30,21 +30,9 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action id="SayHello" class="com.plugin.actions.SayHelloAction" text="SayHello!">
-            <add-to-group group-id="WindowMenu" anchor="first"/>
-        </action>
         <action id="doTranslate" class="com.plugin.actions.doTranslate" text="Translate">
             <add-to-group group-id="CodeMenu" anchor="last"/>
-            <!--<keyboard-shortcut keymap="$default" first-keystroke="shift ctrl T"/>-->
+            <keyboard-shortcut keymap="$default" first-keystroke="shift T"/>
         </action>
     </actions>
-
-    <application-components>
-        <component>
-            <implementation-class>com.plugin.component.MyComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>com.plugin.component.Translate</implementation-class>
-        </component>
-    </application-components>
 </idea-plugin>
