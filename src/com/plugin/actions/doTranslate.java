@@ -9,6 +9,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.plugin.youdao.Util;
 import com.plugin.youdao.YouDaoBasic;
+import icons.SpellcheckerIcons;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -21,6 +22,7 @@ public class doTranslate extends AnAction {
     private String from = "en";
     private String to = "zh_CHS";
     private String method = "POST";
+    private volatile String ans = "%$#_init_symbol_#$%";
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -33,13 +35,24 @@ public class doTranslate extends AnAction {
             return;
         }
 
-        // 获得翻译结果
-        String translateAns = Util.parseAnswer(
-                Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // System.out.println("=======开始翻译了=======");
+                ans = Util.parseAnswer(Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
                         YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
-                ), method)
-        );
-        Messages.showMessageDialog(translateAns, "Translate Answer", Messages.getInformationIcon());
+                ), method));
+            }
+        });
+        thread.start();
+
+
+        while (true) {
+            if (!ans.equals("%$#_init_symbol_#$%")) {
+                Messages.showMessageDialog(ans, "翻译结果", SpellcheckerIcons.Spellcheck);
+                break;
+            }
+        }
     }
 
     @Override
