@@ -12,6 +12,8 @@ import com.plugin.youdao.YouDaoBasic;
 import icons.SpellcheckerIcons;
 import org.apache.commons.lang.StringUtils;
 
+import java.net.ConnectException;
+
 /**
  * @author hongyuzhou
  * @version V1.0
@@ -22,13 +24,16 @@ public class doTranslate extends AnAction {
     private String from = "en";
     private String to = "zh_CHS";
     private String method = "POST";
-    private volatile String ans = "%$#_init_symbol_#$%";
+    private volatile boolean connectException = false;
+    private volatile boolean exception = false;
+    private volatile int before = 1;
+    private volatile int after = 1;
+    private volatile String ans = "...";
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         final Editor editor = anActionEvent.getRequiredData(CommonDataKeys.EDITOR);
         final Project project = anActionEvent.getRequiredData(CommonDataKeys.PROJECT);
-        // final Document document = editor.getDocument();
         final SelectionModel selectionModel = editor.getSelectionModel();
         String selectedContent = selectionModel.getSelectedText();
         if (StringUtils.isBlank(selectedContent)) {
@@ -39,16 +44,36 @@ public class doTranslate extends AnAction {
             @Override
             public void run() {
                 // System.out.println("=======开始翻译了=======");
-                ans = Util.parseAnswer(Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
-                        YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
-                ), method));
+                try {
+                    ans = Util.parseAnswer(Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
+                            YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
+                    ), method));
+                    after = -after;
+                } catch (ConnectException e) {
+                    connectException = true;
+                    e.printStackTrace();
+                }catch (Exception e){
+                    exception = true;
+                    e.printStackTrace();
+                }
             }
         });
         thread.start();
 
 
         while (true) {
-            if (!ans.equals("%$#_init_symbol_#$%")) {
+            if (connectException){
+                connectException = false;
+                Messages.showMessageDialog("Youdao server connection timed out", "连接异常", Messages.getErrorIcon());
+                break;
+            }
+            if (exception) {
+                exception = false;
+                Messages.showMessageDialog("http request error:{}", "请求异常", Messages.getErrorIcon());
+                break;
+            }
+            if (before != after) {
+                before = after;
                 Messages.showMessageDialog(ans, "翻译结果", SpellcheckerIcons.Spellcheck);
                 break;
             }

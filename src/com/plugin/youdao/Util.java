@@ -76,7 +76,7 @@ public class Util {
      * @param method
      * @return
      */
-    public static JSONObject httpRequest(String requestUrl, String method) {
+    public static JSONObject httpRequest(String requestUrl, String method) throws ConnectException, IOException {
         JSONObject json = null;
         StringBuilder builder = new StringBuilder();
         InputStream inputStream = null;
@@ -101,11 +101,9 @@ public class Util {
             connection.disconnect();
             json = JSONObject.parseObject(builder.toString());
         } catch (ConnectException e) {
-            e.printStackTrace();
-            System.out.println("Youdao server connection timed out");
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("http request error:{}");
+            throw e;
+        } catch (IOException e) {
+            throw e;
         } finally {
             try {
                 if (inputStream == null)
