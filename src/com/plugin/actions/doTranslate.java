@@ -35,27 +35,24 @@ public class doTranslate extends AnAction {
         final Editor editor = anActionEvent.getRequiredData(CommonDataKeys.EDITOR);
         final Project project = anActionEvent.getRequiredData(CommonDataKeys.PROJECT);
         final SelectionModel selectionModel = editor.getSelectionModel();
-        String selectedContent = selectionModel.getSelectedText();
+        final String selectedContent = selectionModel.getSelectedText();
         if (StringUtils.isBlank(selectedContent)) {
             return;
         }
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // System.out.println("=======开始翻译了=======");
-                try {
-                    ans = Util.parseAnswer(Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
-                            YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
-                    ), method));
-                    after = -after;
-                } catch (ConnectException e) {
-                    connectException = true;
-                    e.printStackTrace();
-                }catch (Exception e){
-                    exception = true;
-                    e.printStackTrace();
-                }
+        Thread thread = new Thread(() -> {
+            // System.out.println("=======开始翻译了=======");
+            try {
+                ans = Util.parseAnswer(Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
+                        YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
+                ), method));
+                after = -after;
+            } catch (ConnectException e) {
+                connectException = true;
+                e.printStackTrace();
+            }catch (Exception e){
+                exception = true;
+                e.printStackTrace();
             }
         });
         thread.start();
