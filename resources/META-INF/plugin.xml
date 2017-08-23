@@ -32,7 +32,7 @@
         <!-- Add your actions here -->
         <action id="doTranslate" class="com.plugin.actions.doTranslate" text="Translate">
             <add-to-group group-id="CodeMenu" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="shift T"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt Q"/>
         </action>
     </actions>
 </idea-plugin>
