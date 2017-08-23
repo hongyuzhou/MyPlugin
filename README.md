@@ -9,7 +9,7 @@
 省去了来回切换的频繁操作，提高了文档阅读和开发效率。
 
 ### 效果展示（GIF）：
-<video height=500 width=500 src="./GIF/Plugin.mp4">
+<img height=500 width=500 src="./GIF/Plugin.mp4">
 
 ### 使用方法：
 * 选中需要翻译的单词或句子
