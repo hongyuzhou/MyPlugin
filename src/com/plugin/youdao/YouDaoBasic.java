@@ -1,7 +1,9 @@
 package com.plugin.youdao;
 
+import com.alibaba.fastjson.JSONObject;
 import org.jetbrains.annotations.Contract;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -36,8 +38,8 @@ public class YouDaoBasic {
         return preUrl;
     }
 
-    /*
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         String query = "peach";
         String from = "en";
         String to = "zh_CHS";
@@ -46,7 +48,7 @@ public class YouDaoBasic {
         System.out.println(url);
         JSONObject object = Util.httpRequest(url, "POST");
         System.out.println(Util.parseAnswer(object));
-    }*/
+    }
 
     /**
      * 组装请求参数params
