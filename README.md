@@ -18,7 +18,3 @@
 
 ### 安装方法：
 * File -> Setting -> plugins -> install plugin from disk选择压缩包MyPlugin.zip自动安装，重启idea即可
-
-
-##### 本人水平有限，望各路大神给出意见和建议，或者clone后修改后提交，帮助插件越做越好。
-##### Note : 从git上clone到本地之后，不要用idea直接open工程，要选择File->New->Project from Existing Source中导入项目，否则不支持plugin的启动
