@@ -21,14 +21,42 @@ import java.net.ConnectException;
  * @since JDK1.8
  */
 public class doTranslate extends AnAction {
-    private String from = "en";
-    private String to = "zh_CHS";
-    private String method = "POST";
-    private volatile boolean connectException = false;
-    private volatile boolean exception = false;
-    private volatile int before = 1;
-    private volatile int after = 1;
-    private volatile String ans = "...";
+
+    private static String from = "en";
+
+    private static String to = "zh_CHS";
+
+    private static String method = "POST";
+
+    private static volatile boolean connectException = false;
+
+    private static volatile boolean requestException = false;
+
+    private static volatile String ans = "...";
+
+    static class StartTrans implements Runnable {
+
+        private String selectedContent;
+
+        StartTrans(String selectedContent) {
+            this.selectedContent = selectedContent;
+        }
+
+        @Override
+        public void run() {
+            try {
+                ans = Util.parseAnswer(Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
+                        YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
+                ), method));
+            } catch (ConnectException e) {
+                connectException = true;
+                e.printStackTrace();
+            } catch (Exception e) {
+                requestException = true;
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -40,42 +68,28 @@ public class doTranslate extends AnAction {
             return;
         }
 
-        Thread thread = new Thread(() -> {
-            // System.out.println("=======开始翻译了=======");
-            try {
-                ans = Util.parseAnswer(Util.httpRequest(YouDaoBasic.getUrlWithQueryString(
-                        YouDaoBasic.getPreUrl(), YouDaoBasic.queryInfo(selectedContent, from, to)
-                ), method));
-                after = -after;
-            } catch (ConnectException e) {
-                connectException = true;
-                e.printStackTrace();
-            }catch (Exception e){
-                exception = true;
-                e.printStackTrace();
-            }
-        });
-        thread.start();
-
-
-        while (true) {
-            if (connectException){
-                connectException = false;
-                Messages.showMessageDialog("Youdao server connection timed out", "连接异常", Messages.getErrorIcon());
-                break;
-            }
-            if (exception) {
-                exception = false;
-                Messages.showMessageDialog("http request error:{}", "请求异常", Messages.getErrorIcon());
-                break;
-            }
-            if (before != after) {
-                before = after;
-                Messages.showMessageDialog(ans, "翻译结果", SpellcheckerIcons.Spellcheck);
-                break;
-            }
+        Thread translating = new Thread(new StartTrans(selectedContent), "translating");
+        translating.start();
+        try {
+            translating.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+
+        if (connectException) {
+            connectException = false;
+            Messages.showMessageDialog("Youdao server connection timed out", "连接异常", Messages.getErrorIcon());
+            return;
+        }
+        if (requestException) {
+            requestException = false;
+            Messages.showMessageDialog("http request error:{}", "请求异常", Messages.getErrorIcon());
+            return;
+        }
+        Messages.showMessageDialog(ans, "翻译结果", SpellcheckerIcons.Spellcheck);
+
     }
+
 
     @Override
     public void update(AnActionEvent e) {
