@@ -1,12 +1,11 @@
 <idea-plugin>
-    <id>com.your.company.unique.plugin.id</id>
-    <name>Plugin display name here</name>
+    <id>com.dtstack.idea.translator</id>
+    <name>IdeaTranslator</name>
     <version>1.0</version>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="yizhou@dtstack.com" url="http://www.dtstack.com">dtstack</vendor>
 
     <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Translation of English source manuals for Chinese programmer.<br>
     ]]></description>
 
     <change-notes><![CDATA[
