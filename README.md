@@ -18,3 +18,6 @@
 
 ### 安装方法：
 * File -> Setting -> plugins -> install plugin from disk选择压缩包MyPlugin.zip自动安装，重启idea即可
+
+### 官网下载：
+* [IdeaTranslator](https://plugins.jetbrains.com/plugin/12272-ideatranslator/versions)
